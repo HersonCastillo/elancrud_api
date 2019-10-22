@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Categories;
+use App\Products;
 use Illuminate\Http\Request;
 use \Illuminate\Support\Facades\Validator;
 
-class CategoryController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +16,8 @@ class CategoryController extends Controller
     public function index()
     {
         return response()->json([
-            'message' => 'Categories list',
-            'blob' => Categories::get()
+            'message' => 'Products list',
+            'blob' => Products::get()
         ]);
     }
 
@@ -29,20 +29,23 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = $this->categoryValidation($request);
+        $validator = $this->productValidation($request);
         if(!$validator->fails()){
             try {
-                $category = new Categories;
-                $category->name = $request->name;
-                $category->description = $request->description;
-                $category->save();
+                $product = new Products;
+                $product->name = $request->name;
+                $product->description = $request->description;
+                $product->price = $request->price;
+                $product->category_id = $request->category_id;
+                $product->user_id = $request->user_id;
+                $product->save();
 
                 return response()->json([
-                    'message' => 'Category saved'
+                    'message' => 'Product saved'
                 ]);
             } catch(\Exception $ex){
                 return response()->json([
-                    'message' => 'An error occurred trying save a category',
+                    'message' => 'An error occurred trying save a product',
                     'errors' => [
                         'exception' => [$ex->getMessage()]
                     ]
@@ -65,14 +68,14 @@ class CategoryController extends Controller
     public function show($id)
     {
         try {
-            $category = Categories::find($id);
+            $product = Products::find($id);
             return response()->json([
-                'message' => "Category with id #$id",
-                'blob' => $category
+                'message' => "Product with id #$id",
+                'blob' => $product
             ]);
         } catch(\Exception $ex){
             return response()->json([
-                'message' => 'An error occurred trying get a category',
+                'message' => 'An error occurred trying get a product',
                 'errors' => [
                     'exception' => [$ex->getMessage()]
                 ]
@@ -89,21 +92,24 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $category = Categories::find($id);
-        if($category){
-            $validator = $this->categoryValidation($request);
+        $product = Products::find($id);
+        if($product){
+            $validator = $this->productValidation($request);
             if(!$validator->fails()){
                 try {
-                    $category->name = $request->name;
-                    $category->description = $request->description;
-                    $category->save();
+                    $product->name = $request->name;
+                    $product->description = $request->description;
+                    $product->price = $request->price;
+                    $product->category_id = $request->category_id;
+                    $product->user_id = $request->user_id;
+                    $product->save();
     
                     return response()->json([
-                        'message' => 'Category edited'
+                        'message' => 'Product edited'
                     ]);
                 } catch(\Exception $ex){
                     return response()->json([
-                        'message' => 'An error occurred trying save a category',
+                        'message' => 'An error occurred trying save a product',
                         'errors' => [
                             'exception' => [$ex->getMessage()]
                         ]
@@ -134,13 +140,13 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         try {
-            $category = Categories::destroy($id);
+            $product = Products::destroy($id);
             return response()->json([
-                'message' => "Category deleted"
+                'message' => "Product deleted"
             ]);
         } catch(\Exception $ex){
             return response()->json([
-                'message' => 'An error occurred trying delete a category',
+                'message' => 'An error occurred trying delete a product',
                 'errors' => [
                     'exception' => [$ex->getMessage()]
                 ]
@@ -151,10 +157,13 @@ class CategoryController extends Controller
     /**
      * Validation function
      */
-    protected function categoryValidation(Request $request) {
+    protected function productValidation(Request $request) {
         return Validator::make($request->all(), [
             'name' => 'required|min:3|max:100',
-            'description' => 'required'
+            'description' => 'required',
+            'price' => 'required',
+            'category_id' => 'required|exists:categories,id',
+            'user_id' => 'required|exists:users,id'
         ]);
     }
 }

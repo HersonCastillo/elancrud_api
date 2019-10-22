@@ -13,11 +13,13 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::group(['prefix' => 'auth'], function(){
+Route::prefix('auth')->group(function(){
     Route::post('signin', 'AuthController@signin');
     Route::post('signup', 'AuthController@signup');
 });
-
-Route::group(['prefix' => 'app'], function(){
-    Route::resource('categories', 'CategoryController');
+Route::group(['middleware' => 'jwt.auth'], function(){
+    Route::prefix('app')->group(function(){
+        Route::resource('categories', 'CategoryController');
+        Route::resource('products', 'ProductController');
+    });
 });
