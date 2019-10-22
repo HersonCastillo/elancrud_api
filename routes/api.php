@@ -21,5 +21,6 @@ Route::group(['middleware' => 'jwt.auth'], function(){
     Route::prefix('app')->group(function(){
         Route::resource('categories', 'CategoryController');
         Route::resource('products', 'ProductController');
+        Route::resource('likes', 'LikeController');
     });
 });
