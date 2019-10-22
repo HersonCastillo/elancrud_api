@@ -17,3 +17,7 @@ Route::group(['prefix' => 'auth'], function(){
     Route::post('signin', 'AuthController@signin');
     Route::post('signup', 'AuthController@signup');
 });
+
+Route::group(['prefix' => 'app'], function(){
+    Route::resource('categories', 'CategoryController');
+});
