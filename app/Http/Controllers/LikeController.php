@@ -33,7 +33,7 @@ class LikeController extends Controller
             try {
                 $like = new Likes;
                 $like->product_id = $request->product_id;
-                $like->user_id = $request->user_id;
+                $like->user_id = auth()->use()->id;
                 $like->save();
 
                 return response()->json([
@@ -83,8 +83,7 @@ class LikeController extends Controller
      */
     protected function likeValidation(Request $request) {
         return Validator::make($request->all(), [
-            'product_id' => 'required|exists:products,id',
-            'user_id' => 'required|exists:users,id'
+            'product_id' => 'required|exists:products,id'
         ]);
     }
 }

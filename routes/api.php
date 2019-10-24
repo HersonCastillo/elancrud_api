@@ -25,7 +25,7 @@ Route::group(['middleware' => 'jwt.auth'], function(){
         Route::resource('likes', 'LikeController');
     });
 });
-
 Route::prefix('pub')->group(function(){
     Route::get('products', 'ProductController@index');
+    Route::get('categories', 'CategoryController@index');
 });
