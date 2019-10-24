@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use \Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -30,7 +31,7 @@ class AuthController extends Controller
                 $user = new User;
                 $user->name = $request->name;
                 $user->email = $request->email;
-                $user->password = $request->password;
+                $user->password = Hash::make($request->password);
 
                 $user->save();
 
@@ -49,6 +50,18 @@ class AuthController extends Controller
             return response()->json([
                 'message' => 'Some errors found',
                 'errors' => $validator->errors()
+            ], 500);
+        }
+    }
+    public function user(Request $request){
+        try {
+            return $this->wToken($request['token']);
+        } catch(\Exception $e){
+            return response()->json([
+                'message' => 'An error occurred when trying save an User object',
+                'errors' => [
+                    'exception' => [$ex->getMessage()]
+                ]
             ], 500);
         }
     }

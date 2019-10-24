@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 Route::prefix('auth')->group(function(){
     Route::post('signin', 'AuthController@signin');
     Route::post('signup', 'AuthController@signup');
+    Route::get('user', 'AuthController@user');
 });
 Route::group(['middleware' => 'jwt.auth'], function(){
     Route::prefix('app')->group(function(){
@@ -23,4 +24,8 @@ Route::group(['middleware' => 'jwt.auth'], function(){
         Route::resource('products', 'ProductController');
         Route::resource('likes', 'LikeController');
     });
+});
+
+Route::prefix('pub')->group(function(){
+    Route::get('products', 'ProductController@index');
 });

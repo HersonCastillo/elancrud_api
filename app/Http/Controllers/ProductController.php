@@ -8,6 +8,10 @@ use \Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
+    public function __contruct(){
+        $this->middleware('jwt', ['except' => ['index', 'show']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -37,7 +41,7 @@ class ProductController extends Controller
                 $product->description = $request->description;
                 $product->price = $request->price;
                 $product->category_id = $request->category_id;
-                $product->user_id = $request->user_id;
+                $product->user_id = auth()->user()->id;
                 $product->save();
 
                 return response()->json([
@@ -101,7 +105,7 @@ class ProductController extends Controller
                     $product->description = $request->description;
                     $product->price = $request->price;
                     $product->category_id = $request->category_id;
-                    $product->user_id = $request->user_id;
+                    $product->user_id = auth()->user()->id;
                     $product->save();
     
                     return response()->json([
@@ -162,8 +166,7 @@ class ProductController extends Controller
             'name' => 'required|min:3|max:100',
             'description' => 'required',
             'price' => 'required',
-            'category_id' => 'required|exists:categories,id',
-            'user_id' => 'required|exists:users,id'
+            'category_id' => 'required|exists:categories,id'
         ]);
     }
 }
