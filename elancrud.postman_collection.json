@@ -478,7 +478,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"product_id\": 2,\n\t\"user_id\": 1\n}",
+							"raw": "{\n\t\"product_id\": 2\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -592,7 +592,7 @@
 	],
 	"variable": [
 		{
-			"id": "c1bf1f64-bda1-4015-bcf1-ee81f65192c6",
+			"id": "ba4dd003-210e-4706-a28a-6e2386094602",
 			"key": "url",
 			"value": "localhost:8000",
 			"type": "string"

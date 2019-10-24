@@ -33,7 +33,7 @@ class LikeController extends Controller
             try {
                 $like = new Likes;
                 $like->product_id = $request->product_id;
-                $like->user_id = auth()->use()->id;
+                $like->user_id = auth()->user()->id;
                 $like->save();
 
                 return response()->json([
